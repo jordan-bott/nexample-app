@@ -5,6 +5,7 @@ import {
   SignedOut,
   SignOutButton,
 } from "@clerk/nextjs";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         </SignedOut>
         <SignedIn>
           <SignOutButton />
+          <Link href="/user-profile">User Profile</Link>
         </SignedIn>
       </main>
     </div>
