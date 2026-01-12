@@ -18,6 +18,7 @@ export default function Home() {
         <SignedIn>
           <SignOutButton />
           <Link href="/user-profile">User Profile</Link>
+          <Link href="/create-organization">Create New Organization</Link>
         </SignedIn>
       </main>
     </div>
