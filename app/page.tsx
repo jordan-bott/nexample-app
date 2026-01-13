@@ -16,20 +16,32 @@ export default function Home() {
 
   console.log(auth.orgId);
 
+  const buttonClasses =
+    "bg-dark-green p-4 rounded-xl font-semibold text-sm w-40 text-center border-[1.25] border-light-green hover:scale-108 justify-self-center";
   return (
     <div className="">
       <main className="text-4xl font-thin">
-        <OrganizationSwitcher />
-        <SignedOut>
-          <SignInButton />
-          <SignUpButton />
-        </SignedOut>
-        <SignedIn>
-          <SignOutButton />
-          <Link href="/user-profile">User Profile</Link>
-          <Link href="/create-organization">Create New Organization</Link>
-          <Link href="/organization-profile">Organization Profile</Link>
-        </SignedIn>
+        <div className="grid h-screen w-[40%] grid-cols-2 place-content-around gap-4 place-self-center">
+          <OrganizationSwitcher />
+          <SignedIn>
+            <SignOutButton>
+              <button className={buttonClasses}>Sign Out</button>
+            </SignOutButton>
+            <Link href="/user-profile">User Profile</Link>
+            <Link href="/create-organization">Create New Organization</Link>
+            <Link href="/organization-profile">Organization Profile</Link>
+          </SignedIn>
+          <SignedOut>
+            <Link className={buttonClasses} href="/custom-flows/sign-in">
+              Custom Sign In
+            </Link>
+            <Link className={buttonClasses} href="/custom-flows/sign-up">
+              Custom Sign Up
+            </Link>
+            <SignInButton />
+            <SignUpButton />
+          </SignedOut>
+        </div>
       </main>
     </div>
   );
