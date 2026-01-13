@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -6,4 +7,5 @@
   --color-dark-green: oklch(0.4003 0.065 200.83);
   --color-light-peach: oklch(0.8503 0.0426 351.31);
   --color-periwinkle: oklch(0.5712 0.1784 279.51);
+  --font-mont: "Montserrat", sans-serif;
 }
