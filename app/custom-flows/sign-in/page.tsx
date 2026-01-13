@@ -132,7 +132,7 @@ export default function CustomSignInPage() {
   return (
     <>
       <h1>Sign in</h1>
-      <form onSubmit={handleSubmit}>
+      <form className="bg-light-green" onSubmit={handleSubmit}>
         <label htmlFor="email">Enter your email address</label>
         <input
           value={email}
