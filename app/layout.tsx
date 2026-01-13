@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import NavBar from "./(nav)/page";
 
 export const metadata: Metadata = {
   title: "Nexample",
@@ -18,6 +19,7 @@ export default function RootLayout({
         <body
           className={`antialiased bg-light-peach font-mont text-light-text`}
         >
+          <NavBar />
           {children}
         </body>
       </html>

@@ -22,7 +22,6 @@ export default function Home() {
     <div className="">
       <main className="text-4xl font-thin">
         <div className="grid h-screen w-[40%] grid-cols-2 place-content-around gap-4 place-self-center">
-          <OrganizationSwitcher />
           <SignedIn>
             <SignOutButton>
               <button className={buttonClasses}>Sign Out</button>
