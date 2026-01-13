@@ -2,8 +2,9 @@
 
 import * as React from "react";
 import { useSignIn } from "@clerk/nextjs";
-import { PhoneCodeFactor, SignInFirstFactor } from "@clerk/types";
+import { EmailCodeFactor, SignInFirstFactor } from "@clerk/types";
 import { useRouter } from "next/navigation";
+import { OAuthStrategy } from "@clerk/types";
 
 export default function CustomSignInPage() {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -110,6 +111,24 @@ export default function CustomSignInPage() {
     );
   }
 
+  const signInWith = (strategy: OAuthStrategy) => {
+    return signIn
+      .authenticateWithRedirect({
+        strategy,
+        redirectUrl: "/custom-flows/sign-in/sso-callback",
+        redirectUrlComplete: "/", // Learn more about session tasks at https://clerk.com/docs/guides/development/custom-flows/overview#session-tasks
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err: any) => {
+        // See https://clerk.com/docs/guides/development/custom-flows/error-handling
+        // for more info on error handling
+        console.log(err.errors);
+        console.error(err, null, 2);
+      });
+  };
+
   return (
     <>
       <h1>Sign in</h1>
@@ -124,6 +143,11 @@ export default function CustomSignInPage() {
         />
         <button type="submit">Continue</button>
       </form>
+      <div>
+        <button onClick={() => signInWith("oauth_google")}>
+          Sign in with Google
+        </button>
+      </div>
     </>
   );
 }
