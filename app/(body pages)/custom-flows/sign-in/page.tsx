@@ -130,24 +130,40 @@ export default function CustomSignInPage() {
   };
 
   return (
-    <>
-      <h1>Sign in</h1>
-      <form className="bg-light-green" onSubmit={handleSubmit}>
-        <label htmlFor="email">Enter your email address</label>
-        <input
-          value={email}
-          id="email"
-          name="email"
-          type="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <button type="submit">Continue</button>
+    <div className="flex flex-col place-content-center w-screen h-screen place-items-center text-dark-text">
+      <h1 className="bg-med-green rounded-t-xl p-4 w-[50%] text-center border-dark-green border-[1.6] border-b-[1.5] text-dark-text font-semibold">
+        Sign in
+      </h1>
+      <form
+        className="bg-light-green flex flex-col w-[50%] p-4 border-dark-green border-[1.6] border-b-0"
+        onSubmit={handleSubmit}
+      >
+        <div>
+          <label htmlFor="email">Enter your email address</label>
+          <input
+            className="border-dark-green border-2 ml-4 rounded-lg w-[50%] px-3 hover:scale-105"
+            value={email}
+            id="email"
+            name="email"
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <button
+          className="mt-4 cursor-pointer hover:scale-110 self-center text-dark-text"
+          type="submit"
+        >
+          Continue
+        </button>
       </form>
-      <div>
-        <button onClick={() => signInWith("oauth_google")}>
+      <div className="bg-light-green flex flex-col w-[50%] rounded-b-xl p-4 border-dark-green border-[1.6]">
+        <button
+          className="cursor-pointer hover:scale-110"
+          onClick={() => signInWith("oauth_google")}
+        >
           Sign in with Google
         </button>
       </div>
-    </>
+    </div>
   );
 }
