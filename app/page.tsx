@@ -9,7 +9,6 @@ import {
 } from "@clerk/nextjs";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
-import { OrganizationSwitcher } from "@clerk/nextjs";
 
 export default function Home() {
   const auth = useAuth();

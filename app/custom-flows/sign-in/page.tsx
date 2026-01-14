@@ -5,67 +5,29 @@ import { useSignIn } from "@clerk/nextjs";
 import { EmailCodeFactor, SignInFirstFactor } from "@clerk/types";
 import { useRouter } from "next/navigation";
 import { OAuthStrategy } from "@clerk/types";
+import { useState } from "react";
 
 export default function CustomSignInPage() {
   const { isLoaded, signIn, setActive } = useSignIn();
-  const [verifying, setVerifying] = React.useState(false);
-  const [email, setEmail] = React.useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [code, setCode] = React.useState("");
+  const [showEmailCode, setShowEmailCode] = React.useState(false);
   const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (!isLoaded && !signIn) return null;
+    if (!isLoaded) return null;
 
+    // Start the sign-in process using the email and password provided
     try {
-      // Start the sign-in process using the phone number method
-      const { supportedFirstFactors } = await signIn.create({
+      const signInAttempt = await signIn.create({
         identifier: email,
+        password,
       });
 
-      // Filter the returned array to find the 'phone_code' entry
-      const isEmailCodeFactor = (
-        factor: SignInFirstFactor
-      ): factor is EmailCodeFactor => {
-        return factor.strategy === "email_code";
-      };
-      const emailCodeFactor = supportedFirstFactors?.find(isEmailCodeFactor);
-
-      if (emailCodeFactor) {
-        // Grab the phoneNumberId
-        const { emailAddressId } = emailCodeFactor;
-
-        // Send the OTP code to the user
-        await signIn.prepareFirstFactor({
-          strategy: "email_code",
-          emailAddressId,
-        });
-
-        // Set verifying to true to display second form
-        // and capture the OTP code
-        setVerifying(true);
-      }
-    } catch (err) {
-      // See https://clerk.com/docs/guides/development/custom-flows/error-handling
-      // for more info on error handling
-      console.error("Error:", JSON.stringify(err, null, 2));
-    }
-  }
-
-  async function handleVerification(e: React.FormEvent) {
-    e.preventDefault();
-
-    if (!isLoaded && !signIn) return null;
-
-    try {
-      // Use the code provided by the user and attempt verification
-      const signInAttempt = await signIn.attemptFirstFactor({
-        strategy: "email_code",
-        code,
-      });
-
-      // If verification was completed, set the session to active
+      // If sign-in process is complete, set the created session as active
       // and redirect the user
       if (signInAttempt.status === "complete") {
         await setActive({
@@ -81,30 +43,85 @@ export default function CustomSignInPage() {
             router.push("/");
           },
         });
+      } else if (signInAttempt.status === "needs_second_factor") {
+        // Check if email_code is a valid second factor
+        // This is required when Client Trust is enabled and the user
+        // is signing in from a new device.
+        // See https://clerk.com/docs/guides/secure/client-trust
+        const emailCodeFactor = signInAttempt.supportedSecondFactors?.find(
+          (factor): factor is EmailCodeFactor =>
+            factor.strategy === "email_code"
+        );
+
+        if (emailCodeFactor) {
+          await signIn.prepareSecondFactor({
+            strategy: "email_code",
+            emailAddressId: emailCodeFactor.emailAddressId,
+          });
+          setShowEmailCode(true);
+        }
       } else {
         // If the status is not complete, check why. User may need to
         // complete further steps.
-        console.error(signInAttempt);
+        console.error(JSON.stringify(signInAttempt, null, 2));
       }
-    } catch (err) {
+    } catch (err: any) {
       // See https://clerk.com/docs/guides/development/custom-flows/error-handling
       // for more info on error handling
-      console.error("Error:", JSON.stringify(err, null, 2));
+      console.error(JSON.stringify(err, null, 2));
     }
   }
 
-  if (verifying) {
+  // Handle the submission of the email verification code
+  const handleEmailCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!isLoaded) return;
+
+    try {
+      const signInAttempt = await signIn.attemptSecondFactor({
+        strategy: "email_code",
+        code,
+      });
+
+      if (signInAttempt.status === "complete") {
+        await setActive({
+          session: signInAttempt.createdSessionId,
+          navigate: async ({ session }) => {
+            if (session?.currentTask) {
+              console.log(session?.currentTask);
+              return;
+            }
+
+            router.push("/");
+          },
+        });
+      } else {
+        console.error(JSON.stringify(signInAttempt, null, 2));
+      }
+    } catch (err: any) {
+      console.error(JSON.stringify(err, null, 2));
+    }
+  };
+
+  // Display email code verification form
+  if (showEmailCode) {
     return (
       <>
-        <h1>Verify your email address</h1>
-        <form onSubmit={handleVerification}>
-          <label htmlFor="code">Enter your verification code</label>
-          <input
-            value={code}
-            id="code"
-            name="code"
-            onChange={(e) => setCode(e.target.value)}
-          />
+        <h1>Verify your email</h1>
+        <p>A verification code has been sent to your email.</p>
+        <form onSubmit={handleEmailCode}>
+          <div>
+            <label htmlFor="code">Enter verification code</label>
+            <input
+              onChange={(e) => setCode(e.target.value)}
+              id="code"
+              name="code"
+              type="text"
+              inputMode="numeric"
+              value={code}
+            />
+          </div>
           <button type="submit">Verify</button>
         </form>
       </>
@@ -148,6 +165,17 @@ export default function CustomSignInPage() {
             name="email"
             type="email"
             onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="password">Enter password</label>
+          <input
+            className="border-dark-green border-2 ml-4 rounded-lg w-[50%] px-3 hover:scale-105"
+            onChange={(e) => setPassword(e.target.value)}
+            id="password"
+            name="password"
+            type="password"
+            value={password}
           />
         </div>
         <button
