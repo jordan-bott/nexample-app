@@ -28,10 +28,11 @@ export default function CustomSignUp() {
 
       // Set verifying to true to display second form and capture the OTP code
       setVerifying(true);
-    } catch (err) {
+    } catch (err: any) {
       // See https://clerk.com/docs/guides/development/custom-flows/error-handling
       // for more info on error handling
       console.error("Error:", JSON.stringify(err, null, 2));
+      alert(`Whoops. Something bad happened. ${err.errors[0].longMessage}`);
     }
   }
 
@@ -67,10 +68,11 @@ export default function CustomSignUp() {
         // complete further steps.
         console.error(signUpAttempt);
       }
-    } catch (err) {
+    } catch (err: any) {
       // See https://clerk.com/docs/guides/development/custom-flows/error-handling
       // for more info on error handling
       console.error("Error:", JSON.stringify(err, null, 2));
+      alert(`Whoops. Something bad happened. ${err.errors[0].longMessage}`);
     }
   }
 

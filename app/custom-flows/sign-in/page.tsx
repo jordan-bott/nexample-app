@@ -126,6 +126,7 @@ export default function CustomSignInPage() {
         // for more info on error handling
         console.log(err.errors);
         console.error(err, null, 2);
+        alert(`Whoops. Something bad happened. ${err.errors[0].longMessage}`);
       });
   };
 
