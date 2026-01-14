@@ -17,18 +17,24 @@ export default function Home() {
   console.log(auth.orgId);
 
   const buttonClasses =
-    "bg-dark-green p-4 rounded-xl font-semibold text-sm w-40 text-center border-[1.25] border-light-green hover:scale-108 justify-self-center";
+    "bg-dark-green p-4 rounded-xl font-semibold text-sm w-40 text-center border-[1.25] border-light-green hover:scale-108 justify-self-center cursor-pointer";
   return (
     <div className="">
       <main className="text-4xl font-thin">
         <div className="grid h-screen w-[40%] grid-cols-2 place-content-around gap-4 place-self-center">
           <SignedIn>
+            <Link className={buttonClasses} href="/create-organization">
+              Create New Organization
+            </Link>
+            <Link className={buttonClasses} href="/organization-profile">
+              Organization Profile
+            </Link>
+            <Link className={buttonClasses} href="/user-profile">
+              User Profile
+            </Link>
             <SignOutButton>
               <button className={buttonClasses}>Sign Out</button>
             </SignOutButton>
-            <Link href="/user-profile">User Profile</Link>
-            <Link href="/create-organization">Create New Organization</Link>
-            <Link href="/organization-profile">Organization Profile</Link>
           </SignedIn>
           <SignedOut>
             <Link className={buttonClasses} href="/custom-flows/sign-in">
@@ -37,8 +43,16 @@ export default function Home() {
             <Link className={buttonClasses} href="/custom-flows/sign-up">
               Custom Sign Up
             </Link>
-            <SignInButton />
-            <SignUpButton />
+            <SignInButton>
+              <button className={buttonClasses}>
+                Self Hosted <br /> Sign In
+              </button>
+            </SignInButton>
+            <SignUpButton>
+              <button className={buttonClasses}>
+                Self Hosted <br /> Sign Up
+              </button>
+            </SignUpButton>
           </SignedOut>
         </div>
       </main>

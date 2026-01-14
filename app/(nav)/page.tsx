@@ -9,7 +9,6 @@ export default function NavBar() {
   const pathname = usePathname();
   const auth = useAuth();
 
-  console.log(auth.isSignedIn);
   return (
     <>
       {!auth.isSignedIn && pathname === "/" ? null : (
