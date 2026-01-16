@@ -8,15 +8,11 @@ import {
   SignOutButton,
 } from "@clerk/nextjs";
 import Link from "next/link";
-import { useAuth } from "@clerk/nextjs";
 
 export default function Home() {
-  const auth = useAuth();
-
-  console.log(auth.orgId);
-
   const buttonClasses =
     "bg-dark-green p-4 rounded-xl font-semibold text-sm w-40 text-center border-[1.25] border-light-green hover:scale-108 justify-self-center cursor-pointer";
+
   return (
     <div className="">
       <main className="text-4xl font-thin">

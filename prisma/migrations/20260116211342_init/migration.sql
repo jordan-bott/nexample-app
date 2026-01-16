@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "clerk_id" SET DATA TYPE TEXT;
