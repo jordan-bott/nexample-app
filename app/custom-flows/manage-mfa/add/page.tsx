@@ -23,7 +23,7 @@ function AddTotpScreen({
 
   React.useEffect(() => {
     void createTOTP()
-      .then((totp: TOTPResource) => {
+      .then((totp) => {
         setTOTP(totp);
       })
       .catch((err) =>

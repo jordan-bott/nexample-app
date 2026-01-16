@@ -156,7 +156,7 @@ export default function CustomSignInPage() {
       } else {
         console.error(JSON.stringify(signInAttempt, null, 2));
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error(JSON.stringify(err, null, 2));
     }
   };
@@ -218,7 +218,7 @@ export default function CustomSignInPage() {
 
   const signInWith = (strategy: OAuthStrategy) => {
     return signIn
-      .authenticateWithRedirect({
+      ?.authenticateWithRedirect({
         strategy,
         redirectUrl: "/custom-flows/sign-in/sso-callback",
         redirectUrlComplete: "/", // Learn more about session tasks at https://clerk.com/docs/guides/development/custom-flows/overview#session-tasks
@@ -226,7 +226,7 @@ export default function CustomSignInPage() {
       .then((res) => {
         console.log(res);
       })
-      .catch((err: any) => {
+      .catch((err) => {
         // See https://clerk.com/docs/guides/development/custom-flows/error-handling
         // for more info on error handling
         console.log(err.errors);
