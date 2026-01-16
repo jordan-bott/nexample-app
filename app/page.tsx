@@ -28,6 +28,9 @@ export default function Home() {
             <Link className={buttonClasses} href="/organization-profile">
               Organization Profile
             </Link>
+            <Link className={buttonClasses} href="/organization-list">
+              Organization List
+            </Link>
             <Link className={buttonClasses} href="/user-profile">
               User Profile
             </Link>
