@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useSignIn } from "@clerk/nextjs";
-import { EmailCodeFactor, SignInFirstFactor } from "@clerk/types";
+import { EmailCodeFactor, SignInFirstFactor, TOTPFactor } from "@clerk/types";
 import { useRouter } from "next/navigation";
 import { OAuthStrategy } from "@clerk/types";
 import { useState } from "react";
@@ -11,9 +11,11 @@ export default function CustomSignInPage() {
   const { isLoaded, signIn, setActive } = useSignIn();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [code, setCode] = React.useState("");
-  const [showEmailCode, setShowEmailCode] = React.useState(false);
+  const [code, setCode] = useState("");
+  const [showEmailCode, setShowEmailCode] = useState(false);
   const router = useRouter();
+  const [displayTOTP, setDisplayTOTP] = useState(false);
+  const [useBackupCode, setUseBackupCode] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -53,12 +55,20 @@ export default function CustomSignInPage() {
             factor.strategy === "email_code"
         );
 
+        const totpFactor = signInAttempt.supportedSecondFactors?.find(
+          (factor): factor is TOTPFactor => factor.strategy === "totp"
+        );
+
         if (emailCodeFactor) {
           await signIn.prepareSecondFactor({
             strategy: "email_code",
             emailAddressId: emailCodeFactor.emailAddressId,
           });
           setShowEmailCode(true);
+        }
+
+        if (totpFactor) {
+          setDisplayTOTP(true);
         }
       } else {
         // If the status is not complete, check why. User may need to
@@ -71,6 +81,53 @@ export default function CustomSignInPage() {
       console.error(JSON.stringify(err, null, 2));
     }
   }
+
+  // Handle the submission of the TOTP of Backup Code submission
+  const handleTOTPSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!isLoaded) return;
+
+    // Start the sign-in process using the email and password provided
+    try {
+      await signIn.create({
+        identifier: email,
+        password,
+      });
+
+      // Attempt the TOTP or backup code verification
+      const signInAttempt = await signIn.attemptSecondFactor({
+        strategy: useBackupCode ? "backup_code" : "totp",
+        code: code,
+      });
+
+      // If verification was completed, set the session to active
+      // and redirect the user
+      if (signInAttempt.status === "complete") {
+        await setActive({
+          session: signInAttempt.createdSessionId,
+          navigate: async ({ session }) => {
+            if (session?.currentTask) {
+              // Check for tasks and navigate to custom UI to help users resolve them
+              // See https://clerk.com/docs/guides/development/custom-flows/overview#session-tasks
+              console.log(session?.currentTask);
+              return;
+            }
+
+            await router.push("/");
+          },
+        });
+      } else {
+        // If the status is not complete, check why. User may need to
+        // complete further steps.
+        console.log(signInAttempt);
+      }
+    } catch (err) {
+      // See https://clerk.com/docs/guides/development/custom-flows/error-handling
+      // for more info on error handling
+      console.error("Error:", JSON.stringify(err, null, 2));
+    }
+  };
 
   // Handle the submission of the email verification code
   const handleEmailCode = async (e: React.FormEvent) => {
@@ -125,6 +182,37 @@ export default function CustomSignInPage() {
           <button type="submit">Verify</button>
         </form>
       </>
+    );
+  }
+
+  if (displayTOTP) {
+    return (
+      <div>
+        <h1>Verify your account</h1>
+        <form onSubmit={(e) => handleTOTPSubmit(e)}>
+          <div>
+            <label htmlFor="code">Code</label>
+            <input
+              onChange={(e) => setCode(e.target.value)}
+              id="code"
+              name="code"
+              type="text"
+              value={code}
+            />
+          </div>
+          <div>
+            <label htmlFor="backupcode">This code is a backup code</label>
+            <input
+              onChange={() => setUseBackupCode((prev) => !prev)}
+              id="backupcode"
+              name="backupcode"
+              type="checkbox"
+              checked={useBackupCode}
+            />
+          </div>
+          <button type="submit">Verify</button>
+        </form>
+      </div>
     );
   }
 

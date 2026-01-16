@@ -31,6 +31,9 @@ export default function Home() {
             <Link className={buttonClasses} href="/user-profile">
               User Profile
             </Link>
+            <Link className={buttonClasses} href="/custom-flows/manage-mfa">
+              Set up MFA (Custom)
+            </Link>
             <SignOutButton>
               <button className={buttonClasses}>Sign Out</button>
             </SignOutButton>
