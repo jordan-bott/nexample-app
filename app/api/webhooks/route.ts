@@ -26,11 +26,30 @@ export async function POST(req: NextRequest) {
       } catch (error) {
         console.error("Error updating user table", error);
       }
+    } else if (eventType === "user.updated") {
+      try {
+        await prisma.user.update({
+          where: {
+            clerk_id: evt.data.id,
+          },
+          data: {
+            email: evt.data.email_addresses[0].email_address,
+          },
+        });
+      } catch (error) {
+        console.error("Error updating user table", error);
+      }
+    } else if (eventType === "user.deleted") {
+      try {
+        await prisma.user.delete({
+          where: {
+            clerk_id: evt.data.id,
+          },
+        });
+      } catch (error) {
+        console.error("Error deleting user", error);
+      }
     }
-
-    const users = await prisma.user.findMany();
-
-    console.log(users);
 
     return new Response("Webhook received", { status: 200 });
   } catch (err) {
