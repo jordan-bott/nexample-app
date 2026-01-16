@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import NavBar from "./(nav)/page";
-import { jaJP } from "@clerk/localizations";
+import { shadesOfPurple } from "@clerk/themes";
 
 export const metadata: Metadata = {
   title: "Nexample",
@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider localization={jaJP}>
+    <ClerkProvider theme={{ shadesOfPurple }}>
       <html lang="en">
         <body
           className={`antialiased bg-light-peach font-mont text-light-text`}
