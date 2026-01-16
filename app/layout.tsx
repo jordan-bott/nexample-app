@@ -3,6 +3,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import NavBar from "./(nav)/page";
 import { shadesOfPurple } from "@clerk/themes";
+import { jaJP } from "@clerk/localizations";
 
 export const metadata: Metadata = {
   title: "Nexample",
@@ -14,8 +15,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const local = {
+    signIn: {
+      start: {
+        subtitle: "pineapple pizza",
+      },
+    },
+  };
   return (
-    <ClerkProvider theme={{ shadesOfPurple }}>
+    <ClerkProvider appearance={{ theme: shadesOfPurple }} localization={local}>
       <html lang="en">
         <body
           className={`antialiased bg-light-peach font-mont text-light-text`}
