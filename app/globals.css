@@ -11,3 +11,44 @@
   --color-dark-text: oklch(0.3029 0.037 275.73);
   --font-mont: "Montserrat", sans-serif;
 }
+
+.cl-card {
+  background-color: #1970da;
+  color: #ffffff;
+}
+
+.cl-cardBox {
+  border-radius: 5px;
+}
+
+.cl-headerTitle {
+  color: #ffffff;
+}
+
+.cl-headerSubtitle {
+  color: #ffffff;
+}
+
+.cl-formFieldLabel {
+  color: #ffffff;
+}
+
+.cl-socialButtonsIconButton__discord {
+  background-color: #29ffbe;
+}
+
+.cl-socialButtonsIconButton__github {
+  background-color: #d7afff;
+}
+
+.cl-socialButtonsIconButton__google {
+  background-color: #ee3872;
+}
+
+.cl-socialButtonsIconButton:hover {
+  background-color: darkseagreen;
+}
+
+.cl-formButtonPrimary {
+  background-color: #2952be;
+}
