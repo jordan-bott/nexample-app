@@ -135,7 +135,7 @@ function SuccessScreen() {
 
 export default function AddMFaScreen() {
   const [step, setStep] = React.useState<AddTotpSteps>("add");
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { isLoaded, isSignedIn } = useUser();
 
   if (!isLoaded) {
     // Handle loading state

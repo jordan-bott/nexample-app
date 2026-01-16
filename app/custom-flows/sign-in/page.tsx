@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useSignIn } from "@clerk/nextjs";
-import { EmailCodeFactor, SignInFirstFactor, TOTPFactor } from "@clerk/types";
+import { EmailCodeFactor, TOTPFactor } from "@clerk/types";
 import { useRouter } from "next/navigation";
 import { OAuthStrategy } from "@clerk/types";
 import { useState } from "react";
@@ -75,7 +75,7 @@ export default function CustomSignInPage() {
         // complete further steps.
         console.error(JSON.stringify(signInAttempt, null, 2));
       }
-    } catch (err: any) {
+    } catch (err) {
       // See https://clerk.com/docs/guides/development/custom-flows/error-handling
       // for more info on error handling
       console.error(JSON.stringify(err, null, 2));
