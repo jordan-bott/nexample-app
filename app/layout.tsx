@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import NavBar from "./(nav)/page";
+import { shadesOfPurple } from "@clerk/ui/themes";
 
 export const metadata: Metadata = {
   title: "Nexample",
@@ -13,8 +14,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const local = {
+    signUp: {
+      legalConsent: {
+        checkbox: {
+          label__termsOfServiceAndPrivacyPolicy:
+            'I have read and accept the {{ privacyPolicyLink || link("Privacy Policy") }} and {{ termsOfServiceLink || link("Terms of Service") }}',
+        },
+      },
+    },
+  };
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      localization={local}
+      appearance={{
+        theme: "simple",
+      }}
+    >
       <html lang="en">
         <body
           className={`antialiased bg-light-peach font-mont text-light-text`}

@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  SignOutButton,
-} from "@clerk/nextjs";
+import { SignInButton, SignUpButton, Show, SignOutButton } from "@clerk/nextjs";
 import Link from "next/link";
 
 export default function Home() {
@@ -17,7 +11,7 @@ export default function Home() {
     <div className="">
       <main className="text-4xl font-thin">
         <div className="grid h-screen w-[40%] grid-cols-2 place-content-around gap-4 place-self-center">
-          <SignedIn>
+          <Show when="signed-in">
             <Link className={buttonClasses} href="/create-organization">
               Create New Organization
             </Link>
@@ -36,25 +30,25 @@ export default function Home() {
             <SignOutButton>
               <button className={buttonClasses}>Sign Out</button>
             </SignOutButton>
-          </SignedIn>
-          <SignedOut>
+          </Show>
+          <Show when="signed-out">
             <Link className={buttonClasses} href="/custom-flows/sign-in">
               Custom Sign In
             </Link>
             <Link className={buttonClasses} href="/custom-flows/sign-up">
               Custom Sign Up
             </Link>
-            <SignInButton>
-              <button className={buttonClasses}>
+            <SignInButton mode="modal" />
+            {/* <button className={buttonClasses}>
                 Self Hosted <br /> Sign In
-              </button>
-            </SignInButton>
+              </button> */}
+            {/* </SignInButton> */}
             <SignUpButton>
               <button className={buttonClasses}>
                 Self Hosted <br /> Sign Up
               </button>
             </SignUpButton>
-          </SignedOut>
+          </Show>
         </div>
       </main>
     </div>

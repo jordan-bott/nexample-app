@@ -2,7 +2,7 @@
 
 import {
   OrganizationSwitcher,
-  SignedIn,
+  Show,
   // useOrganizationList,
   // useOrganization,
 } from "@clerk/nextjs";
@@ -35,9 +35,9 @@ export default function NavBar() {
     <>
       {!auth.isSignedIn && pathname === "/" ? null : (
         <div className="border-b-2 border-periwinkle w-screen flex justify-end h-15">
-          <SignedIn>
+          <Show when="signed-in">
             <OrganizationSwitcher />
-          </SignedIn>
+          </Show>
           {pathname != "/" ? (
             <Link
               className="text-sm text-periwinkle p-4 hover:text-dark-green"

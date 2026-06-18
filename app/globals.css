@@ -11,3 +11,7 @@
   --color-dark-text: oklch(0.3029 0.037 275.73);
   --font-mont: "Montserrat", sans-serif;
 }
+
+/* .cl-profileSectionPrimaryButton__emailAddresses {
+  display: none;
+} */
