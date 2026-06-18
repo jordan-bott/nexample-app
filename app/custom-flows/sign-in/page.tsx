@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useSignIn } from "@clerk/nextjs";
+import { useSignIn } from "@clerk/nextjs/legacy";
 import { EmailCodeFactor, TOTPFactor } from "@clerk/types";
 import { useRouter } from "next/navigation";
 import { OAuthStrategy } from "@clerk/types";

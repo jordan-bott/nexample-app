@@ -50,7 +50,7 @@ export default function OrganizationSwitcher() {
             <tbody>
               {userMemberships?.data?.map((mem) => (
                 <tr key={mem.id}>
-                  <td>{mem.publicUserData.identifier}</td>
+                  <td>{mem.publicUserData?.identifier}</td>
                   <td>{mem.organization.name}</td>
                   <td>{mem.createdAt.toLocaleDateString()}</td>
                   <td>{mem.role}</td>

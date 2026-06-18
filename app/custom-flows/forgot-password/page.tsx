@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useAuth, useSignIn } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
+import { useSignIn } from "@clerk/nextjs/legacy";
 import type { NextPage } from "next";
 import { useRouter } from "next/navigation";
 
